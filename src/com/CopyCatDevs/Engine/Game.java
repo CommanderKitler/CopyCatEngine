@@ -18,8 +18,8 @@ import com.CopyCatDevs.Engine.Sprites.SpriteSheetLoader;
 public class Game extends Canvas implements Runnable {
 private static final long serialVersionUID = 1L;
 	
-	public static final int HEIGHT = 480;
-	public static final int WIDTH = 720;
+	public static final int HEIGHT = 160;
+	public static final int WIDTH = 160;
 	public static final int SCALE = 3;
 
 	public static final String NAME = "Pixel Engine";
@@ -57,7 +57,7 @@ private static final long serialVersionUID = 1L;
     		}
     	}
     	Random random = new Random();
-    	screen.render(random.nextInt(16) * 16, random.nextInt(16) * 16, 1, 16, 16);
+    	screen.render(random.nextInt(16) * 16, random.nextInt(16) * 16, 3, 16, 16);
     	
     }
 	public void run() {
