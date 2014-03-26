@@ -12,14 +12,17 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import com.CopyCatDevs.Engine.Level.Level;
+import com.CopyCatDevs.Engine.Sprites.Sprite;
 import com.CopyCatDevs.Engine.Sprites.SpriteSheetLoader;
+import com.CopyCatDevs.Engine.Sprites.Sprites;
 
 
 public class Game extends Canvas implements Runnable {
 private static final long serialVersionUID = 1L;
 	
-	public static final int HEIGHT = 160;
-	public static final int WIDTH = 160;
+	public static final int HEIGHT = 480;
+	public static final int WIDTH = 720;
 	public static final int SCALE = 3;
 
 	public static final String NAME = "Pixel Engine";
@@ -29,6 +32,7 @@ private static final long serialVersionUID = 1L;
 	
 	public SpriteSheetLoader loader;
 	private Screen screen;
+	public Level level;
 	private boolean running = false;
 	Random random = new Random();
 	
@@ -41,25 +45,18 @@ private static final long serialVersionUID = 1L;
     }
     
     public void init() {
-    	BufferedImage sheet = null;
-    	try {
-    	sheet = ImageIO.read(Game.class.getResourceAsStream("/tiles.png"));
-    	} catch (IOException e) {
-    		e.printStackTrace();
-    	}
+
     	
-    	loader = new SpriteSheetLoader(sheet);
-    	screen = new Screen(WIDTH, HEIGHT, loader);
+    	loader = new SpriteSheetLoader();
+    	screen = new Screen(WIDTH, HEIGHT);
     	
-    	for(int y = 0; y < 16; y++){
-    		for(int x = 0; x < 16; x++){
-    			screen.render(x*16, y*16, 0, 16, 16);
+    	level = new Level(16,16);
+
     		}
-    	}
-    	Random random = new Random();
-    	screen.render(random.nextInt(16) * 16, random.nextInt(16) * 16, 3, 16, 16);
     	
-    }
+    	
+    	
+    
 	public void run() {
 		init();
 		while(running){
@@ -90,6 +87,8 @@ private static final long serialVersionUID = 1L;
 			requestFocus();
 			return;
 		}
+		level.renderBackground(0, 0, screen);
+		
 		for(int y = 0; y < screen.h; y++){
 			for(int x = 0; x < screen.w; x++){
 				pixels[x+(y*WIDTH)] =screen.pixels[x+(y*screen.w)];

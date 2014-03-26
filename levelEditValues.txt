@@ -1,0 +1,3 @@
+R  , G ,   B  ->> ExampleTile
+ 76, 255,  0  ->> GrassTile
+114, 114, 114 ->> RockTile

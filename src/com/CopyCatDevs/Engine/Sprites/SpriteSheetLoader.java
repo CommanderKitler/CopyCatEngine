@@ -1,7 +1,11 @@
 package com.CopyCatDevs.Engine.Sprites;
 
+import javax.imageio.ImageIO;
+
+import com.CopyCatDevs.Engine.Game;
+
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
+
 
 
 public class SpriteSheetLoader {
@@ -9,31 +13,43 @@ public class SpriteSheetLoader {
 	public int[] pixels;
 	int x, y, sheetWidth;
 	
-	public SpriteSheetLoader(BufferedImage sheet){
-		BufferedImage image = new BufferedImage(sheet.getWidth(), sheet.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		image.getGraphics().drawImage(sheet, 0, 0, null);
+	public SpriteSheetLoader(){
+	}
+		public static Sprite[][] cutTiles(String filename, int w, int h){
+			return cutTiles(filename, w, h, 0, 0);
+		}
 		
-		sheetPixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+		public static Sprite[][] cutTiles(String filename, int w, int h, int xOffs, int yOffs) {
+			
+			try{
+				BufferedImage image = ImageIO.read(Game.class.getResource(filename));
+				
+				int xTiles = (image.getWidth() - xOffs) / w;
+				int yTiles = (image.getHeight() - yOffs) / h;
+				
+				Sprite[][] result = new Sprite[xTiles][yTiles];
+				
+				
+				for(int x = 0; x < xTiles; x++) {
+					for(int y = 0; y < yTiles; y++) {
+						result[x][y] = new Sprite(w, h);
+						image.getRGB(xOffs = x * w, yOffs + y * h, w, h, result[x][y].pixels, 0, w);
+					}
+					
+				}
+				return result;
+					
 		
-		sheetWidth = sheet.getWidth();
+			} catch (Exception e) {
+				System.err.println(e.getStackTrace());
+			}
+				
+
+		return null;	
 		
+
 	}
 	
 
-	public void grabfile(int tile, int width, int height) {
-		pixels = new int[width * height];
-		
-		int xTile = tile % 16;
-		int yTile = tile / 16;
-		
-		for(int y = 0; y < height; y++){
-			for(int x = 0; x < width; x++){
-				pixels[(x + (y * width))] = sheetPixels[(x+(xTile*width)) + (y+(yTile*height)) * sheetWidth];
-				
-				
-			}
-		
-		}
 	}
 
-}

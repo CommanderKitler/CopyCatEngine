@@ -1,23 +1,25 @@
 package com.CopyCatDevs.Engine;
 
-import com.CopyCatDevs.Engine.Sprites.SpriteSheetLoader;
+import com.CopyCatDevs.Engine.Sprites.Sprite;
+
 
 public class Screen{
-	private SpriteSheetLoader loader;
+
 	public int w, h;
 	int xOffset = 0, yOffset = 0;
 	public int[] pixels;
-	public Screen(int w, int h,SpriteSheetLoader newloader){
-		this.loader = newloader;
+	
+	public Screen(int w, int h){	
 		this.w = w;
 		this.h = h;
 		
 		pixels = new int[w*h];
+	
 	}
 	
-	public void render(int xPos, int yPos, int tile, int width, int height) {
-		loader.grabfile(tile, width, height);
-		
+	public void renderSprite(int xPos, int yPos, Sprite sprite) {
+		int height = sprite.h;
+		int width = sprite.w;
 		xPos -= xOffset;
 		yPos -= yOffset;
 		
@@ -26,11 +28,21 @@ public class Screen{
 				for(int x = 0; x < width; x++){
 					if(xPos + x < 0 || xPos + x >= w) continue;
 					
-					int col = loader.pixels[x + (y * height)];
-					if(col != -65281) pixels[(x + xPos) + (y + yPos) * w] = col;
+					int col = sprite.pixels[x + (y * height)];
+					if(col != -65281 && col < 0) pixels[(x + xPos) + (y + yPos) * w] = col;
 		
 
 				}
 		}
 	}
+	
+	public void setxOffs(int offs){
+		xOffset = offs;
+		
+	}
+	
+	public void setyOffs(int offs) {
+		yOffset = offs;
+	}
 }
+
